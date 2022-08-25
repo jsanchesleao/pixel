@@ -1,8 +1,7 @@
-package main
+package pixel
 
 import (
 	"fmt"
-	"math/rand"
 	"time"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -18,9 +17,21 @@ type Engine struct {
 	Height   int32
 	Scale    int
 	FPS      int
+	Inputs   Inputs
 	window   *sdl.Window
 	renderer *sdl.Renderer
 	buffer   *sdl.Surface
+}
+
+type Inputs struct {
+	A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z bool
+	Escape, Tab, Shift, Alt, Ctrl, Comma, Dot, Slash, Semicolon, Backslash       bool
+	LeftBracket, RightBracket                                                    bool
+	Space, Backspace, Enter                                                      bool
+	Option, Command, RightCtrl, Menu                                             bool
+	Num1, Num2, Num3, Num4, Num5, Num6, Num7, Num8, Num9, Num0                   bool
+	Minus, Equals                                                                bool
+	Up, Left, Down, Right                                                        bool
 }
 
 type UpdateFn func(*Engine)
@@ -88,10 +99,134 @@ func (e *Engine) Loop(update UpdateFn, render RenderFn) {
 	for running {
 		before := time.Now().UnixMilli()
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
-			switch event.(type) {
+			switch t := event.(type) {
 			case *sdl.QuitEvent:
 				running = false
 				break
+			case *sdl.KeyboardEvent:
+				if t.Repeat > 0 {
+					break
+				}
+				switch t.Keysym.Sym {
+				case 'q':
+					e.Inputs.Q = t.State == sdl.PRESSED
+				case 'w':
+					e.Inputs.W = t.State == sdl.PRESSED
+				case 'e':
+					e.Inputs.E = t.State == sdl.PRESSED
+				case 'r':
+					e.Inputs.R = t.State == sdl.PRESSED
+				case 't':
+					e.Inputs.T = t.State == sdl.PRESSED
+				case 'y':
+					e.Inputs.Y = t.State == sdl.PRESSED
+				case 'u':
+					e.Inputs.U = t.State == sdl.PRESSED
+				case 'i':
+					e.Inputs.I = t.State == sdl.PRESSED
+				case 'o':
+					e.Inputs.O = t.State == sdl.PRESSED
+				case 'p':
+					e.Inputs.P = t.State == sdl.PRESSED
+				case 'a':
+					e.Inputs.A = t.State == sdl.PRESSED
+				case 's':
+					e.Inputs.S = t.State == sdl.PRESSED
+				case 'd':
+					e.Inputs.D = t.State == sdl.PRESSED
+				case 'f':
+					e.Inputs.F = t.State == sdl.PRESSED
+				case 'g':
+					e.Inputs.G = t.State == sdl.PRESSED
+				case 'h':
+					e.Inputs.H = t.State == sdl.PRESSED
+				case 'j':
+					e.Inputs.J = t.State == sdl.PRESSED
+				case 'k':
+					e.Inputs.K = t.State == sdl.PRESSED
+				case 'l':
+					e.Inputs.L = t.State == sdl.PRESSED
+				case 'z':
+					e.Inputs.Z = t.State == sdl.PRESSED
+				case 'x':
+					e.Inputs.X = t.State == sdl.PRESSED
+				case 'c':
+					e.Inputs.C = t.State == sdl.PRESSED
+				case 'v':
+					e.Inputs.V = t.State == sdl.PRESSED
+				case 'b':
+					e.Inputs.B = t.State == sdl.PRESSED
+				case 'n':
+					e.Inputs.N = t.State == sdl.PRESSED
+				case 'm':
+					e.Inputs.M = t.State == sdl.PRESSED
+				case '\x1b': // Escape
+					e.Inputs.Escape = t.State == sdl.PRESSED
+				case '1':
+					e.Inputs.Num1 = t.State == sdl.PRESSED
+				case '2':
+					e.Inputs.Num2 = t.State == sdl.PRESSED
+				case '3':
+					e.Inputs.Num3 = t.State == sdl.PRESSED
+				case '4':
+					e.Inputs.Num4 = t.State == sdl.PRESSED
+				case '5':
+					e.Inputs.Num5 = t.State == sdl.PRESSED
+				case '6':
+					e.Inputs.Num6 = t.State == sdl.PRESSED
+				case '7':
+					e.Inputs.Num7 = t.State == sdl.PRESSED
+				case '8':
+					e.Inputs.Num8 = t.State == sdl.PRESSED
+				case '9':
+					e.Inputs.Num9 = t.State == sdl.PRESSED
+				case '0':
+					e.Inputs.Num0 = t.State == sdl.PRESSED
+				case '-':
+					e.Inputs.Minus = t.State == sdl.PRESSED
+				case '=':
+					e.Inputs.Equals = t.State == sdl.PRESSED
+				case '\t':
+					e.Inputs.Tab = t.State == sdl.PRESSED
+				case 1073742049: // shift
+					e.Inputs.Shift = t.State == sdl.PRESSED
+				case 1073742054: // alt
+					e.Inputs.Alt = t.State == sdl.PRESSED
+				case 1073742048: // ctrl
+					e.Inputs.Ctrl = t.State == sdl.PRESSED
+				case ',':
+					e.Inputs.Comma = t.State == sdl.PRESSED
+				case '.':
+					e.Inputs.Dot = t.State == sdl.PRESSED
+				case '/':
+					e.Inputs.Slash = t.State == sdl.PRESSED
+				case ';':
+					e.Inputs.Semicolon = t.State == sdl.PRESSED
+				case '\\':
+					e.Inputs.Backslash = t.State == sdl.PRESSED
+				case ' ':
+					e.Inputs.Space = t.State == sdl.PRESSED
+				case '\b':
+					e.Inputs.Backspace = t.State == sdl.PRESSED
+				case '\r':
+					e.Inputs.Enter = t.State == sdl.PRESSED
+				case 1073742051: //option
+					e.Inputs.Option = t.State == sdl.PRESSED
+				case 1073742050: //command
+					e.Inputs.Command = t.State == sdl.PRESSED
+				case 1073742052: // right ctrl
+					e.Inputs.Command = t.State == sdl.PRESSED
+				case 1073741925: // menu
+					e.Inputs.Command = t.State == sdl.PRESSED
+				case 1073741906: // up
+					e.Inputs.Up = t.State == sdl.PRESSED
+				case 1073741904: // left
+					e.Inputs.Left = t.State == sdl.PRESSED
+				case 1073741905: // down
+					e.Inputs.Down = t.State == sdl.PRESSED
+				case 1073741903: // right
+					e.Inputs.Right = t.State == sdl.PRESSED
+				}
 			}
 		}
 
@@ -104,7 +239,6 @@ func (e *Engine) Loop(update UpdateFn, render RenderFn) {
 		if skips > 0 {
 			skips--
 			sdl.Delay(uint32(interval))
-			fmt.Println("frame skip")
 			continue
 		} else {
 			render(e)
@@ -134,30 +268,5 @@ func (e *Engine) Loop(update UpdateFn, render RenderFn) {
 		}
 
 		sdl.Delay(uint32(delay))
-	}
-}
-
-func main() {
-
-	engine, err := NewEngine("Pixels", 300, 200, 4, 60)
-	if err != nil {
-		panic(err)
-	}
-	defer engine.Destroy()
-
-	engine.Loop(Update, Render)
-}
-
-func Update(e *Engine) {}
-
-func Render(e *Engine) {
-	for i := 0; i < int(e.Width)*int(e.Height); i++ {
-		nx := rand.Intn(int(e.Width))
-		ny := rand.Intn(int(e.Height))
-		red := uint8(rand.Intn(255))
-		green := uint8(rand.Intn(255))
-		blue := uint8(rand.Intn(255))
-
-		e.Draw(nx, ny, red, green, blue)
 	}
 }
