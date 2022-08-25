@@ -1,4 +1,4 @@
-module pixel
+module github.com/jsanchesleao/pixel
 
 go 1.18
 
