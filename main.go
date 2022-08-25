@@ -1,7 +1,6 @@
 package pixel
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/veandco/go-sdl2/sdl"
